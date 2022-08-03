@@ -6,21 +6,16 @@ PROGRAMMER = arduino
 #Se for usar o arduino nano usar o BAUD a 57600
 #BAUD       = 115200
 BAUD       = 57600
-COMPILE    = avr-gcc -Wall -mmcu=$(DEVICE)
+COMPILE    = avra
 
 
 default: compile upload clean
 
 compile:
-	$(COMPILE) -c $(FILENAME).asm -o $(FILENAME).o
-	$(COMPILE) -o $(FILENAME).elf $(FILENAME).o
-	avr-objcopy -j .text -j .data -O ihex $(FILENAME).elf $(FILENAME).hex 
-	#avr-size --format=avr --mcu=$(DEVICE) $(FILENAME).elf
+	$(COMPILE) $(FILENAME).S
 
 upload:
-	avrdude -v -p $(DEVICE) -c $(PROGRAMMER) -P $(PORT) -b $(BAUD) -U flash:w:$(FILENAME).hex:i
+	avrdude -v -p $(DEVICE) -c $(PROGRAMMER) -P $(PORT) -b $(BAUD) -U flash:w:$(FILENAME).S.hex:i
 
 clean:
-	rm $(FILENAME).o
-	rm $(FILENAME).elf
-	rm $(FILENAME).hex
+	rm $(FILENAME).S.*

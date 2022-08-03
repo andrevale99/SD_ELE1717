@@ -1,7 +1,12 @@
-.org 0x0000
+;hello.asm
+;  turns on an LED which is connected to PB5 (digital out 13)
 
-sbi DDRB, 5
-sbi POTRB, 5
+.include "./m328Pdef.inc"
+.cseg
+.org 0x00
 
-setup:
-	rjmp setup
+	ldi r16,0b00000100
+	out DDRD,r16
+	out PortD,r16
+Start:
+	rjmp Start
